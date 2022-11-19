@@ -1,3 +1,4 @@
+using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -6,8 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Dependency container
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+//builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
 
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
 // Add connection string
 
 builder.Services.AddDbContext<StoreContext>(x=>x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -46,6 +49,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
