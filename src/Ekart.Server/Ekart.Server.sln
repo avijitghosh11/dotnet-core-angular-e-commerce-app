@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35806.99 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ekart.Api", "Ekart.Api\Ekart.Api.csproj", "{BED1CE16-AB9C-4743-9A32-E73A5A85AFBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ekart.Infrastructure", "Ekart.Infrastructure\Ekart.Infrastructure.csproj", "{61FF4101-DF85-452B-A289-2C1F5BF450AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ekart.Core", "Ekart.Core\Ekart.Core.csproj", "{DDC624C7-0AF4-4FFA-BA31-56B3566CEB89}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BED1CE16-AB9C-4743-9A32-E73A5A85AFBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED1CE16-AB9C-4743-9A32-E73A5A85AFBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED1CE16-AB9C-4743-9A32-E73A5A85AFBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED1CE16-AB9C-4743-9A32-E73A5A85AFBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61FF4101-DF85-452B-A289-2C1F5BF450AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61FF4101-DF85-452B-A289-2C1F5BF450AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61FF4101-DF85-452B-A289-2C1F5BF450AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61FF4101-DF85-452B-A289-2C1F5BF450AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDC624C7-0AF4-4FFA-BA31-56B3566CEB89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDC624C7-0AF4-4FFA-BA31-56B3566CEB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDC624C7-0AF4-4FFA-BA31-56B3566CEB89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDC624C7-0AF4-4FFA-BA31-56B3566CEB89}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
