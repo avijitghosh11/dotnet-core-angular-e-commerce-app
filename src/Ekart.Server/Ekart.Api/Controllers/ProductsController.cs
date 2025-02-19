@@ -1,18 +1,21 @@
 ﻿using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
+using Ekart.Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ekart.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController(IProductRepository repo) : ControllerBase
+    public class ProductsController(IGenericRepository<Product> repo) : ControllerBase
     {
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(string? brand, string? type, string? sort)
         {
-            return Ok(await repo.GetProductsAsync(brand,type,sort));
+            var spec = new ProductSpecification(brand, type, sort);
+            var products = await repo.GetAsync(spec);
+            return Ok(products);
         }
 
         [HttpGet("{id:int}")]
@@ -20,7 +23,7 @@ namespace Ekart.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            Product product = await repo.GetProductByIdAsync(id);
+            Product product = await repo.GetByIdAsync(id);
 
             if (product == null)
                 return NotFound();
@@ -32,8 +35,8 @@ namespace Ekart.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Product>> CreateProduct([FromBody] Product product)
         {
-            repo.AddProduct(product);
-            if(await repo.SaveChangeAsync())
+            repo.Add(product);
+            if(await repo.SaveAllAsync())
             {
                 return CreatedAtAction("GetProduct", new { id = product.Id }, product);
             }
@@ -45,11 +48,11 @@ namespace Ekart.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> UpdateProduct(int id, [FromBody] Product product)
         {
-            if (id != product.Id || !(repo.ProductExists(id)))
+            if (id != product.Id || !(repo.IsExists(id)))
                 return BadRequest("Cannot update this product");
 
-            repo.UpdateProduct(product);
-            if (await repo.SaveChangeAsync())
+            repo.Update(product);
+            if (await repo.SaveAllAsync())
             {
                 return NoContent();
             }
@@ -62,11 +65,11 @@ namespace Ekart.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteProduct(int id)
         {
-            Product product = await repo.GetProductByIdAsync(id);
+            Product product = await repo.GetByIdAsync(id);
             if (product == null)
                 return NotFound();
-            repo.DeleteProduct(product);
-            if (await repo.SaveChangeAsync())
+            repo.Delete(product);
+            if (await repo.SaveAllAsync())
             {
                 return NoContent();
             }
@@ -75,16 +78,18 @@ namespace Ekart.Api.Controllers
 
         [HttpGet("brands")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetBrands()
+        public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
         {
-            return Ok(await repo.GetBrandsAsync());
+            var spec = new BrandListSpecification();
+            return Ok(await repo.GetAsync(spec));
         }
 
         [HttpGet("types")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetTypes()
+        public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
         {
-            return Ok(await repo.GetTypesAsync());
+            var spec = new TypeListSpecification();
+            return Ok(await repo.GetAsync(spec));
         }
     }
 }

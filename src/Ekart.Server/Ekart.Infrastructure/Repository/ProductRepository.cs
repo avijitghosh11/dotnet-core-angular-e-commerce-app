@@ -3,7 +3,7 @@ using Ekart.Core.Interfaces;
 using Ekart.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ekart.Infrastructure.Implements
+namespace Ekart.Infrastructure.Repository
 {
     public class ProductRepository(StoreContext storeContext) : IProductRepository
     {
