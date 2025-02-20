@@ -1,21 +1,22 @@
-﻿using Ekart.Core.Entites;
+﻿using Ekart.Api.RequestHelpers;
+using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
+using Ekart.Core.Models;
 using Ekart.Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace Ekart.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController(IGenericRepository<Product> repo) : ControllerBase
+    public class ProductsController(IGenericRepository<Product> repo) : BaseApiController
     {
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(string? brand, string? type, string? sort)
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery]ProductSpecParams specParams)
         {
-            var spec = new ProductSpecification(brand, type, sort);
-            var products = await repo.GetAsync(spec);
-            return Ok(products);
+            var spec = new ProductSpecification(specParams);
+            
+            return await CreatePagedResult(repo,spec,specParams.PageIndex,specParams.PageSize);
         }
 
         [HttpGet("{id:int}")]
