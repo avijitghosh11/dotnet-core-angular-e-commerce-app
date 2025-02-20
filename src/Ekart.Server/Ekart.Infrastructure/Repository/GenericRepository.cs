@@ -1,5 +1,6 @@
 ﻿using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
+using Ekart.Core.Specifications.Interface;
 using Ekart.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,13 @@ namespace Ekart.Infrastructure.Repository
         public void Add(T obj)
         {
             context.Set<T>().Add(obj);
+        }
+
+        public async Task<int> CountAsync(ISpecification<T> spec)
+        {
+            var query = context.Set<T>().AsQueryable();
+            query = spec.ApplyCriteria(query);
+            return await query.CountAsync();
         }
 
         public void Delete(T obj)

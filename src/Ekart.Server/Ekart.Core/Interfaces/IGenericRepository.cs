@@ -1,4 +1,5 @@
 ﻿using Ekart.Core.Entites;
+using Ekart.Core.Specifications.Interface;
 
 namespace Ekart.Core.Interfaces
 {
@@ -15,5 +16,6 @@ namespace Ekart.Core.Interfaces
         void Delete(T obj);
         bool IsExists(int id);
         Task<bool> SaveAllAsync();
+        Task<int> CountAsync(ISpecification<T> spec);
     }
 }
