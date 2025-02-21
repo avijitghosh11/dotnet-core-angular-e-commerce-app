@@ -1,3 +1,4 @@
+using Ekart.Api.Middleware;
 using Ekart.Core.Interfaces;
 using Ekart.Infrastructure.Data;
 using Ekart.Infrastructure.Repository;
@@ -15,11 +16,15 @@ builder.Services.AddDbContext<StoreContext>(options=>
 });
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddCors();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseCors(x=>x.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200", "https://localhost:4200"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
