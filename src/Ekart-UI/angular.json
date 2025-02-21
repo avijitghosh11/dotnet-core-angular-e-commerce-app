@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "EkartUI": {
+    "Ekart-UI": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "EkartUI:build:production"
+              "buildTarget": "Ekart-UI:build:production"
             },
             "development": {
-              "buildTarget": "EkartUI:build:development"
+              "buildTarget": "Ekart-UI:build:development"
             }
           },
           "defaultConfiguration": "development"
