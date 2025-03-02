@@ -3,7 +3,6 @@ using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
 using Ekart.Core.Specifications.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 
 namespace Ekart.Api.Controllers
 {
