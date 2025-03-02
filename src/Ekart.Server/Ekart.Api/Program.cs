@@ -2,7 +2,9 @@ using Ekart.Api.Middleware;
 using Ekart.Core.Interfaces;
 using Ekart.Infrastructure.Data;
 using Ekart.Infrastructure.Repository;
+using Ekart.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,14 @@ builder.Services.AddDbContext<StoreContext>(options=>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddCors();
+builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
+{
+    string connStr = builder.Configuration.GetConnectionString("Redis");
+    if (connStr == null) throw new Exception("Redis connection string not found.");
+    var configOptions = ConfigurationOptions.Parse(connStr,true);
+    return ConnectionMultiplexer.Connect(configOptions);
+});
+builder.Services.AddSingleton<ICartService, CartService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
