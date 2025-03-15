@@ -1,4 +1,5 @@
 using Ekart.Api.Middleware;
+using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
 using Ekart.Infrastructure.Data;
 using Ekart.Infrastructure.Repository;
@@ -28,13 +29,17 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
 });
 builder.Services.AddSingleton<ICartService, CartService>();
 
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<StoreContext>();
+
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseCors(x=>x.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200", "https://localhost:4200"));
+app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200", "https://localhost:4200"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -47,7 +52,7 @@ app.UseSwaggerUI(opt=>opt.SwaggerEndpoint("/openapi/v1.json","Ekart.Api"));
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapGroup("api").MapIdentityApi<AppUser>();
 
 try
 {
