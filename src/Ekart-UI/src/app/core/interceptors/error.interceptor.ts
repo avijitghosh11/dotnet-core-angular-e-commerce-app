@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
