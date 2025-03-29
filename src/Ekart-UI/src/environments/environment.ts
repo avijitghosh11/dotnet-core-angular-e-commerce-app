@@ -1,4 +1,5 @@
 export const environment = {
     producttion: true,
-    apiUrl: 'api/'
+    apiUrl: 'api/',
+    stripePublicKey: ""
 };

@@ -18,6 +18,19 @@ namespace Ekart.Infrastructure.Data
                 await context.Products.AddRangeAsync(products);
                 await context.SaveChangesAsync();
             }
+
+            if (!context.DeliveryMethods.Any())
+            {
+                var dmData = await File.ReadAllTextAsync("../Ekart.Infrastructure/Data/SeedData/delivery.json");
+
+                var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(dmData);
+
+                if (methods == null) return;
+
+                context.DeliveryMethods.AddRange(methods);
+
+                await context.SaveChangesAsync();
+            }
         }
     }
 }
