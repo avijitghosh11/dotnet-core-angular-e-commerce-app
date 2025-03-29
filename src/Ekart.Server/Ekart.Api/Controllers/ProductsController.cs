@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ekart.Api.Controllers
 {
-    public class ProductsController(IGenericRepository<Product> repo) : BaseApiController
+    public class ProductsController(IUnitOfWork unit) : BaseApiController
     {
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -14,7 +14,7 @@ namespace Ekart.Api.Controllers
         {
             var spec = new ProductSpecification(specParams);
             
-            return await CreatePagedResult(repo,spec,specParams.PageIndex,specParams.PageSize);
+            return await CreatePagedResult(unit.Repository<Product>(), spec,specParams.PageIndex,specParams.PageSize);
         }
 
         [HttpGet("{id:int}")]
@@ -22,7 +22,7 @@ namespace Ekart.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            Product product = await repo.GetByIdAsync(id);
+            Product product = await unit.Repository<Product>().GetByIdAsync(id);
 
             if (product == null)
                 return NotFound();
@@ -34,8 +34,8 @@ namespace Ekart.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Product>> CreateProduct([FromBody] Product product)
         {
-            repo.Add(product);
-            if(await repo.SaveAllAsync())
+            unit.Repository<Product>().Add(product);
+            if(await unit.Complete())
             {
                 return CreatedAtAction("GetProduct", new { id = product.Id }, product);
             }
@@ -47,11 +47,11 @@ namespace Ekart.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> UpdateProduct(int id, [FromBody] Product product)
         {
-            if (id != product.Id || !(repo.IsExists(id)))
+            if (id != product.Id || !(unit.Repository<Product>().IsExists(id)))
                 return BadRequest("Cannot update this product");
 
-            repo.Update(product);
-            if (await repo.SaveAllAsync())
+            unit.Repository<Product>().Update(product);
+            if (await unit.Complete())
             {
                 return NoContent();
             }
@@ -64,11 +64,11 @@ namespace Ekart.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteProduct(int id)
         {
-            Product product = await repo.GetByIdAsync(id);
+            Product product = await unit.Repository<Product>().GetByIdAsync(id);
             if (product == null)
                 return NotFound();
-            repo.Delete(product);
-            if (await repo.SaveAllAsync())
+            unit.Repository<Product>().Delete(product);
+            if (await unit.Complete())
             {
                 return NoContent();
             }
@@ -80,7 +80,7 @@ namespace Ekart.Api.Controllers
         public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
         {
             var spec = new BrandListSpecification();
-            return Ok(await repo.GetAsync(spec));
+            return Ok(await unit.Repository<Product>().GetAsync(spec));
         }
 
         [HttpGet("types")]
@@ -88,7 +88,7 @@ namespace Ekart.Api.Controllers
         public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
         {
             var spec = new TypeListSpecification();
-            return Ok(await repo.GetAsync(spec));
+            return Ok(await unit.Repository<Product>().GetAsync(spec));
         }
     }
 }

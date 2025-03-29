@@ -1,6 +1,5 @@
 ﻿using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
-using Ekart.Core.Specifications.Interface;
 using Ekart.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -58,11 +57,6 @@ namespace Ekart.Infrastructure.Repository
         public bool IsExists(int id)
         {
             return context.Set<T>().Any(x => x.Id == id);
-        }
-
-        public async Task<bool> SaveAllAsync()
-        {
-            return await context.SaveChangesAsync() > 0;
         }
 
         public void Update(T obj)

@@ -1,7 +1,6 @@
 ﻿using Ekart.Api.RequestHelpers;
 using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
-using Ekart.Core.Specifications.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ekart.Api.Controllers
