@@ -1,4 +1,5 @@
 using Ekart.Api.Middleware;
+using Ekart.Api.SignalR;
 using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
 using Ekart.Infrastructure.Data;
@@ -33,7 +34,7 @@ builder.Services.AddSingleton<ICartService, CartService>();
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<StoreContext>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
-
+builder.Services.AddSignalR();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -50,10 +51,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseSwaggerUI(opt=>opt.SwaggerEndpoint("/openapi/v1.json","Ekart.Api"));
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<AppUser>();
+app.MapHub<NotificationHub>("/hub/notifications");
 
 try
 {
