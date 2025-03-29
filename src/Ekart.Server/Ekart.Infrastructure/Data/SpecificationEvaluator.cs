@@ -1,5 +1,6 @@
 ﻿using Ekart.Core.Entites;
-using Ekart.Core.Specifications.Interface;
+using Ekart.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ekart.Infrastructure.Data
 {
@@ -31,7 +32,8 @@ namespace Ekart.Infrastructure.Data
             {
                 query = query.Skip(spec.Skip).Take(spec.Take);
             }
-
+            query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+            query = spec.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
             return query;
         }
 

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ekart.Api.Controllers
 {
     public class PaymentsController(IPaymentService paymentService,
-     IGenericRepository<DeliveryMethod> dmRepo) : BaseApiController
+     IUnitOfWork unit) : BaseApiController
     {
         [Authorize]
         [HttpPost("{cartId}")]
@@ -22,7 +22,7 @@ namespace Ekart.Api.Controllers
         [HttpGet("delivery-methods")]
         public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
         {
-            return Ok(await dmRepo.GetAllAsync());
+            return Ok(await unit.Repository<DeliveryMethod>().GetAllAsync());
         }
     }
 }
