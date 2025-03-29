@@ -1,16 +1,10 @@
-﻿using System.Runtime.Serialization;
-
-namespace Ekart.Core.Entites.OrderAggregate
+﻿namespace Ekart.Core.Entites.OrderAggregate
 {
     public enum OrderStatus
     {
-        [EnumMember(Value = "Pending")]
         Pending,
-
-        [EnumMember(Value = "Payment Received")]
         PaymentReceived,
-
-        [EnumMember(Value = "Payment Failed")]
-        PaymentFailed
+        PaymentFailed,
+        PaymentMismatch
     }
 }
