@@ -4,13 +4,15 @@ import { Pagination } from '../../shared/models/pagination';
 import { Product } from '../../shared/models/product';
 import { Observable } from 'rxjs';
 import { ShopParam } from '../../shared/models/shopParam';
+import { environment } from '../../../environments/environment'
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShopService {
   private httpClient = inject(HttpClient);
-  baseUrl: string = "http://localhost:5001/api/";
+  baseUrl: string = environment.apiUrl;
   brands: string[] = [];
   types: string[] = [];
 
