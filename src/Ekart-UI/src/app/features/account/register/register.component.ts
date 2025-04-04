@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
-import { AccountService } from '../../../app/core/services/account.service';
+import { AccountService } from '../../../../app/core/services/account.service';
 import { Router } from '@angular/router';
-import { SnackbarService } from '../../../app/core/services/snackbar.service';
-import { TextInputComponent } from "../../../app/shared/components/text-input/text-input.component";
+import { SnackbarService } from '../../../../app/core/services/snackbar.service';
+import { TextInputComponent } from "../../../../app/shared/components/text-input/text-input.component";
 
 @Component({
     selector: 'app-register',
