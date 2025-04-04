@@ -1,7 +1,7 @@
 ﻿using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
-using Ekart.Core.Models;
 using Ekart.Core.Specifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ekart.Api.Controllers
@@ -29,6 +29,7 @@ namespace Ekart.Api.Controllers
             return Ok(product);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -42,6 +43,7 @@ namespace Ekart.Api.Controllers
             return BadRequest("Problem creating product");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,6 +60,7 @@ namespace Ekart.Api.Controllers
             return BadRequest("Problem updating the product");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

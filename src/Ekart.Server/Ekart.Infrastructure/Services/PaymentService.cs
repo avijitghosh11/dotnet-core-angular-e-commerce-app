@@ -5,11 +5,15 @@ using Stripe;
 
 namespace Ekart.Infrastructure.Services
 {
-    public class PaymentService(IConfiguration config, ICartService cartService,
-    IUnitOfWork unit) : IPaymentService
+    public class PaymentService : IPaymentService
     {
-        public async Task<ShoppingCart?> CreateOrUpdatePaymentIntent(string cartId)
+        private readonly ICartService cartService;
+        private readonly IUnitOfWork unit;
+        public PaymentService(IConfiguration config, ICartService cartService,
+         IUnitOfWork unit)
         {
+            this.cartService = cartService;
+            this.unit = unit;
             var isDevelopment = string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
                 "development", StringComparison.InvariantCultureIgnoreCase);
 
@@ -20,6 +24,9 @@ namespace Ekart.Infrastructure.Services
                 StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("StripeSettings_SecretKey");
             }
 
+        }
+        public async Task<ShoppingCart?> CreateOrUpdatePaymentIntent(string cartId)
+        {
             var cart = await cartService.GetCartAsync(cartId)
                 ?? throw new Exception("Cart unavailable");
 
@@ -41,6 +48,19 @@ namespace Ekart.Infrastructure.Services
             await cartService.SetCartAsync(cart);
 
             return cart;
+        }
+
+        public async Task<string> RefundPayment(string paymentIntentId)
+        {
+            var refundOptions = new RefundCreateOptions
+            {
+                PaymentIntent = paymentIntentId
+            };
+
+            var refundService = new RefundService();
+            var result = await refundService.CreateAsync(refundOptions);
+
+            return result.Status;
         }
 
         private async Task CreateUpdatePaymentIntentAsync(ShoppingCart cart, long total)
