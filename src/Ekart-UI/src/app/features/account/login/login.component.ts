@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { AccountService } from '../../../app/core/services/account.service';
+import { AccountService } from '../../../../app/core/services/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

@@ -1,4 +1,5 @@
-﻿using Ekart.Core.Entites;
+﻿using Ekart.Api.RequestHelpers;
+using Ekart.Core.Entites;
 using Ekart.Core.Interfaces;
 using Ekart.Core.Specifications;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,7 @@ namespace Ekart.Api.Controllers
 {
     public class ProductsController(IUnitOfWork unit) : BaseApiController
     {
+        [Cache(600)]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery]ProductSpecParams specParams)
@@ -17,6 +19,7 @@ namespace Ekart.Api.Controllers
             return await CreatePagedResult(unit.Repository<Product>(), spec,specParams.PageIndex,specParams.PageSize);
         }
 
+        [Cache(600)]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,6 +32,7 @@ namespace Ekart.Api.Controllers
             return Ok(product);
         }
 
+        [InvalidateCache("api/products|")]
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -43,6 +47,7 @@ namespace Ekart.Api.Controllers
             return BadRequest("Problem creating product");
         }
 
+        [InvalidateCache("api/products|")]
         [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -60,6 +65,7 @@ namespace Ekart.Api.Controllers
             return BadRequest("Problem updating the product");
         }
 
+        [InvalidateCache("api/products|")]
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,6 +84,7 @@ namespace Ekart.Api.Controllers
             return BadRequest("Problem deleting the product");
         }
 
+        [Cache(10000)]
         [HttpGet("brands")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
@@ -86,6 +93,7 @@ namespace Ekart.Api.Controllers
             return Ok(await unit.Repository<Product>().GetAsync(spec));
         }
 
+        [Cache(10000)]
         [HttpGet("types")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
