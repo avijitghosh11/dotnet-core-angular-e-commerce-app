@@ -16,5 +16,6 @@ namespace Ekart.Api.DTOs
 
         [Required]
         public PaymentSummary PaymentSummary { get; set; } = null!;
+        public decimal Discount { get; set; }
     }
 }
