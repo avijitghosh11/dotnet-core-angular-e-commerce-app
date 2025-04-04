@@ -1,5 +1,6 @@
 ﻿using Ekart.Core.Entites;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Ekart.Infrastructure.Data
@@ -8,9 +9,10 @@ namespace Ekart.Infrastructure.Data
     {
         public static async Task SeedAsync(StoreContext context)
         {
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if(!await context.Products.AnyAsync())
             {
-                var productData = await File.ReadAllTextAsync("../Ekart.Infrastructure/Data/SeedData/products.json");
+                var productData = await File.ReadAllTextAsync(path + @"/Data/SeedData/products.json");
                 var products = JsonSerializer.Deserialize<List<Product>>(productData);
                 
                 if (products == null) return;
@@ -21,7 +23,7 @@ namespace Ekart.Infrastructure.Data
 
             if (!context.DeliveryMethods.Any())
             {
-                var dmData = await File.ReadAllTextAsync("../Ekart.Infrastructure/Data/SeedData/delivery.json");
+                var dmData = await File.ReadAllTextAsync(path + @"/Data/SeedData/delivery.json");
 
                 var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(dmData);
 
