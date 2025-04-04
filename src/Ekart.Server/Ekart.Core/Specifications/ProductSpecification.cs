@@ -1,5 +1,4 @@
 ﻿using Ekart.Core.Entites;
-using Ekart.Core.Models;
 
 namespace Ekart.Core.Specifications
 {

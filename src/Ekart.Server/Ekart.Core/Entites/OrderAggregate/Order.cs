@@ -1,6 +1,8 @@
-﻿namespace Ekart.Core.Entites.OrderAggregate
+﻿using Ekart.Core.Interfaces;
+
+namespace Ekart.Core.Entites.OrderAggregate
 {
-    public class Order : BaseEntity
+    public class Order : BaseEntity, IDtoConvertible
     {
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
         public required string BuyerEmail { get; set; }

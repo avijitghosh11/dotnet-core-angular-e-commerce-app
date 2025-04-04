@@ -15,7 +15,8 @@ import { CheckoutSuccessComponent } from './features/checkout/checkout-success/c
 import { orderCompleteGuard } from './core/guards/order-complete.guard';
 import { OrderComponent } from './features/order/order.component';
 import { OrderDetailedComponent } from './features/order/order-detailed/order-detailed.component';
-
+import { AdminComponent } from './features/admin/admin.component';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -34,5 +35,6 @@ export const routes: Routes = [
     { path: 'test-errors', component: TestErrorsComponent },
     { path: 'not-found', component: NotFoundComponent },
     { path: 'server-error', component: ServerErrorComponent },
+    { path: 'admin', component: AdminComponent, canActivate: [authGuard, adminGuard] },
     { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
