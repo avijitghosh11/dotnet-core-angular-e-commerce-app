@@ -4,6 +4,7 @@ using Ekart.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ekart.Infrastructure.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20250405032643_pending")]
+    partial class pending
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,13 +281,13 @@ namespace Ekart.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b5a4221d-d65b-450e-80f0-4d04436f05cd",
+                            Id = "c6e8ece8-3116-4246-833c-99b247f2417e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b5a4221d-d65b-450e-80f0-4d03036f055d",
+                            Id = "7a21b8e6-1025-4e4a-a65f-2e106f45c996",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
